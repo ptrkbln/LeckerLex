@@ -1,31 +1,43 @@
 import React, { useContext, useState, useEffect } from "react";
 import { RecipeContext } from "../context/RecipeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faShoppingCart,
-  faTint,
-  faUtensils,
-  faWheatAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  faClock,
-  faLeaf,
-  faSeedling,
-  faFire,
-} from "@fortawesome/free-solid-svg-icons";
+import {faShoppingCart, faTint, faUtensils, faWheatAlt,} from "@fortawesome/free-solid-svg-icons";
+import {faClock, faLeaf, faSeedling, faFire,} from "@fortawesome/free-solid-svg-icons";
 
 function Favorites() {
-  const { favorites, setFavorites, setShoppingList } =
-    useContext(RecipeContext);
+  const { favorites, setFavorites, setShoppingList } =useContext(RecipeContext);
   const [hasInitialized, setHasInitialized] = useState(false);
   const [cookTime, setCookTime] = useState("");
   const [calories, setCalories] = useState("");
   const [nutrition, setNutrition] = useState("");
+  const [filteredFavorites, setFilteredFavorites] = useState([]);
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
   const [servings, setServings] = useState(1);
   const [missingIngredients, setMissingIngredients] = useState({});
-  const [pendingShoppingListUpdate, setPendingShoppingListUpdate] =
-    useState(null);
+  const [pendingShoppingListUpdate, setPendingShoppingListUpdate] =useState(null);
+
+  // Funktion zur Filterung der Favoriten basierend auf den ausgewählten Filtern
+  useEffect(() => {
+    let filtered = favorites;
+
+    if (cookTime) {
+      const timeRange = cookTime.split("-").map(Number);
+      filtered = filtered.filter(recipe =>
+        recipe.preparationTime >= timeRange[0] && recipe.preparationTime <= timeRange[1]
+        );
+    }
+    if (calories) {
+      const calorieRange = calories.split("-").map(Number);
+      filtered = filtered.filter(recipe => 
+        recipe.nutrition.calories >= calorieRange[0] && recipe.nutrition.calories <= calorieRange[1]
+        );
+    }
+    if (nutrition) {
+      filtered = filtered.filter(recipe => recipe.diet?.[nutrition]);
+    }
+    setFilteredFavorites(filtered);
+  }, [cookTime, calories, nutrition, favorites]);
+
 
   const toggleDetails = (id) => {
     setSelectedRecipeId((prevId) => (prevId === id ? null : id));
@@ -83,7 +95,6 @@ function Favorites() {
             return originalIngredient
               ? {
                   ...ingredient,
-                  /* amount: (originalIngredient.amount * servings).toFixed(1) */
                   amount: Number.isInteger(ingredient.amount * servings)
                     ? ingredient.amount * servings // Ganze Zahl ohne Dezimalstellen
                     : (ingredient.amount * servings).toFixed(1), // Eine Nachkommastelle bei Dezimalzahlen
@@ -235,6 +246,7 @@ function Favorites() {
       )}
 
       {/* Bedingte Darstellung */}
+      {/* Falls ein Rezept ausgewählt wurde, zeige die Details */}
       {selectedRecipeId ? (
         <div className="grid gap-6 p-6 bg-gray-100 rounded-lg shadow-lg max-w-3xl mx-auto">
           {/* Rezept aus Favoriten filtern */}
@@ -260,7 +272,7 @@ function Favorites() {
                   {/* Kochzeit, Kalorien und Ernährungs-Icons */}
                   <div className="flex justify-between items-center mb-4 p-3">
                     {/* Kochzeit */}
-                    <div className='"text-gray-700 font-light text-sm'>
+                    <div className='"text-gray-700 font-light text-sm space-x-1'>
                       <FontAwesomeIcon icon={faClock} className="text-lg" />
                       <span className="text-md text-gray-500">
                         {recipe.preparationTime} min
@@ -268,7 +280,7 @@ function Favorites() {
                     </div>
 
                     {/* Ernährung */}
-                    <div className='"text-gray-700 font-light text-sm'>
+                    <div className='"text-gray-700 font-light text-sm space-x-6'>
                       {recipe.diet?.vegetarian && (
                         <FontAwesomeIcon
                           icon={faLeaf}
@@ -310,7 +322,7 @@ function Favorites() {
                     </div>
 
                     {/* Kalorien */}
-                    <div className='"text-gray-700 font-light text-sm'>
+                    <div className='"text-gray-700 font-light text-sm space-x-1'>
                       <FontAwesomeIcon
                         icon={faFire}
                         className="text-lg text-red-500"
@@ -443,6 +455,8 @@ function Favorites() {
             ))}
 
           {/* Back to Favorites außerhalb der Cards */}
+
+          {/* Zurück zu Favoriten (nach dem Ansehen eines gefilterten Rezepts) */}
           <div className="flex justify-center mt-4">
             <button
               onClick={() => setSelectedRecipeId(null)}
@@ -451,9 +465,120 @@ function Favorites() {
               Back to Favorites
             </button>
           </div>
+
+          {/* Falls ein Filter aktiv ist, zeige eine Option zum Zurücksetzen, um auf die ungefilterte Favoriten-Seite zurück zu kommen*/}
+          {filteredFavorites.length > 0 && (
+            <div className="flex justify-center mt-4">
+              <button
+              onClick={() => {
+                setFilteredFavorites([]); // Setze den Filter zurück
+              }}
+              className="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600">
+                Show All Favorites
+              </button>
+              </div>
+          )}
         </div>
       ) : (
-        /* Falls kein Rezept ausgewählt ist, zeige normale Favoritenliste */
+        <>
+        {/* Falls Favoriten gefiltert wurden, zeige nur gefilterte Favoriten */}
+        
+        {filteredFavorites.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
+            {filteredFavorites.map((recipe) => (
+              <div
+                key={recipe.id}
+                className={`flex flex-col border rounded-lg shadow-md
+                          transform hover:scale-95
+                          hover:outline hover:outline-1 hover:outline-gray-300 
+                          hover:shadow-md   hover:bg-green-50 
+                          transition-colors bg-white
+                        }`}
+                onClick={() => toggleDetails(recipe.id)}
+                >
+                <img
+                  src={recipe.image}
+                  alt={recipe.title}
+                  className="w-full h-48 object-cover rounded-t-lg hover:opacity-90 
+                            transition-opacity"
+                />
+                <div
+                  className="p-4 flex-1 flex flex-col justify-between bg-white hover:bg-green-50 
+                              transition-colors"
+                  >
+                  <h2 className="text-xl font-semibold mb-2">{recipe.title}</h2>
+                </div>
+
+                {/* Kochzeit, Kalorien und Ernährungs-Icons */}
+                <div className="flex justify-between items-center mb-4 p-3">
+                    {/* Kochzeit */}
+                    <div className='"text-gray-700 font-light text-sm space-x-1'>
+                      <FontAwesomeIcon icon={faClock} className="text-lg" />
+                        <span className="text-md text-gray-500">
+                        {recipe.preparationTime} min
+                      </span>
+                    </div>
+
+                    {/* Ernährung */}
+                    <div className='"text-gray-700 font-light text-sm space-x-4'>
+                      {recipe.diet?.vegetarian && (
+                        <FontAwesomeIcon
+                          icon={faLeaf}
+                          className="text-green-500"
+                          title="vegetarian"
+                        />
+                      )}
+                      {recipe.diet?.vegan && (
+                        <FontAwesomeIcon
+                          icon={faSeedling}
+                          className="text-green-500"
+                          title="vegan"
+                        />
+                      )}
+                      {!recipe.diet?.glutenFree && (
+                        <FontAwesomeIcon
+                          icon={faWheatAlt}
+                          className="text-yellow-500"
+                          title="contains gluten"
+                        />
+                      )}
+                      {!recipe.diet?.dairyFree && (
+                        <FontAwesomeIcon
+                          icon={faTint}
+                          className="text-blue-500"
+                          title="contains dairy"
+                        />
+                      )}
+                      {!recipe.diet?.vegetarian &&
+                        !recipe.diet?.vegan &&
+                        recipe.diet?.glutenFree &&
+                        recipe.diet?.dairyFree && (
+                        <FontAwesomeIcon
+                          icon={faUtensils}
+                          className="text-gray-500"
+                          title="no diet"
+                        />
+                      )}
+                    </div>
+
+                      {/* Kalorien */}
+                      <div className='"text-gray-700 font-light text-sm space-x-1'>
+                        <FontAwesomeIcon
+                          icon={faFire}
+                          className="text-lg text-red-500"
+                        />
+                        <span className="text-md text-gray-500">
+                          {recipe.nutrition?.calories || "N/A"} kcal
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+
+        ) : (
+
+        /* Falls keine Filter aktiv sind, zeige normale Favoritenliste */
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
           {favorites.map((recipe) => (
             <div
@@ -482,7 +607,7 @@ function Favorites() {
               {/* Kochzeit, Kalorien und Ernährungs-Icons */}
               <div className="flex justify-between items-center mb-4 p-3">
                 {/* Kochzeit */}
-                <div className='"text-gray-700 font-light text-sm'>
+                <div className='"text-gray-700 font-light text-sm space-x-1'>
                   <FontAwesomeIcon icon={faClock} className="text-lg" />
                   <span className="text-md text-gray-500">
                     {recipe.preparationTime} min
@@ -490,7 +615,7 @@ function Favorites() {
                 </div>
 
                 {/* Ernährung */}
-                <div className='"text-gray-700 font-light text-sm'>
+                <div className='"text-gray-700 font-light text-sm space-x-4'>
                   {recipe.diet?.vegetarian && (
                     <FontAwesomeIcon
                       icon={faLeaf}
@@ -532,7 +657,7 @@ function Favorites() {
                 </div>
 
                 {/* Kalorien */}
-                <div className='"text-gray-700 font-light text-sm'>
+                <div className='"text-gray-700 font-light text-sm space-x-1'>
                   <FontAwesomeIcon
                     icon={faFire}
                     className="text-lg text-red-500"
@@ -546,6 +671,8 @@ function Favorites() {
           ))}
         </div>
       )}
+    </>
+  )}
 
       {/* Bedingung: wenn kein Rezept ausgewählt wurde,dann den Button anzeigen */}
       {!selectedRecipeId && (
