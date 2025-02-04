@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { Link } from 'react-router-dom';
-import HintergrundVideo from '../../assets/videos/FallingTomatos.mp4';
-
-
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { Link } from "react-router-dom";
+import HintergrundVideo from "../../assets/videos/FallingTomatos.mp4";
 
 const containerVariants = {
   hidden: {},
@@ -17,17 +15,17 @@ const containerVariants = {
 
 const letterVariants = {
   hidden: { opacity: 0, y: 30, scale: 0.8 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    y: 0,
     scale: 1,
-    transition: { type: 'spring', stiffness: 300, damping: 20 }
+    transition: { type: "spring", stiffness: 300, damping: 20 },
   },
-  exit: { 
-    opacity: 0, 
-    y: -50, 
+  exit: {
+    opacity: 0,
+    y: -50,
     scale: 0.8,
-    transition: { duration: 1, ease: 'easeInOut' }
+    transition: { duration: 1, ease: "easeInOut" },
   },
 };
 
@@ -37,13 +35,13 @@ const AnimatedLetters = ({ text, className }) => {
   useEffect(() => {
     // Wait 2 seconds before starting the visible animation.
     const timer = setTimeout(() => {
-      controls.start('visible').then(() => {});
+      controls.start("visible").then(() => {});
     }, 4000);
 
     return () => clearTimeout(timer);
   }, [controls]);
 
-  const letters = text.split('');
+  const letters = text.split("");
   return (
     <motion.span
       variants={containerVariants}
@@ -53,20 +51,19 @@ const AnimatedLetters = ({ text, className }) => {
     >
       {letters.map((letter, index) => (
         <motion.span key={index} variants={letterVariants}>
-          {letter === ' ' ? '\u00A0' : letter}
+          {letter === " " ? "\u00A0" : letter}
         </motion.span>
       ))}
     </motion.span>
   );
 };
 
-
 export default function LandingPage() {
   const [videoLoaded, setVideoLoaded] = useState(true);
   const videoRef = useRef(null);
   const { inView } = useInView({
     triggerOnce: true,
-    rootMargin: '0px',
+    rootMargin: "0px",
   });
 
   useEffect(() => {
@@ -111,8 +108,11 @@ export default function LandingPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 2 }}
       >
-        <h1 className="text-orange-300 text-3xl md:text-5xl font-bold">
-          LeckerLex
+        <h1 className="text-orange-200 text-5xl font-bold">
+          <span className="font-charmonman md:text-6xl font-bold text-green-400">
+            Lecker
+          </span>
+          <span className="font-semibold text-4xl">Lex</span>
         </h1>
       </motion.div>
 
@@ -143,7 +143,6 @@ export default function LandingPage() {
           <button
             className="button px-6 py-3 text-md md:text-lg bg-green-700 text-orange-50 rounded-full hover:bg-green-800 hover:scale-105"
             aria-label="Get inspired button"
-
           >
             Get Inspired
           </button>

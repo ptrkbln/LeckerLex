@@ -6,11 +6,15 @@ import {
   faTint,
   faUtensils,
   faWheatAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import {
   faClock,
   faLeaf,
   faSeedling,
   faFire,
 } from "@fortawesome/free-solid-svg-icons";
+
+import CulinaryJournalForm from "../components/CulinaryJournalForm";
 
 function Favorites() {
   const { favorites, setFavorites, setShoppingList } =
@@ -37,6 +41,7 @@ function Favorites() {
     setServings((prev) => Math.max(0.5, Math.round((prev - 0.5) * 10) / 10));
   };
 
+  // Diese Funktion verwaltet das Hinzufügen / Entfernen von Zutaten zur missingIngredients-Liste, basierend auf dem recipeId. Sie aktualisiert auch die Menge der fehlenden Zutaten abhängig von servings.
   const toggleMissingIngredient = (recipeId, ingredient) => {
     setMissingIngredients((prev) => {
       const updated = { ...prev };
@@ -52,8 +57,8 @@ function Favorites() {
         updated[recipeId].push({
           name: ingredient.name,
           amount: Number.isInteger(ingredient.amount * servings)
-            ? ingredient.amount * servings
-            : (ingredient.amount * servings).toFixed(1),
+            ? ingredient.amount * servings // Ganze Zahl ohne Dezimalstellen
+            : (ingredient.amount * servings).toFixed(1), // Eine Nachkommastelle bei Dezimalzahlen
           unit: ingredient.unit,
         });
       }
@@ -80,9 +85,11 @@ function Favorites() {
             return originalIngredient
               ? {
                   ...ingredient,
+
+                  /* amount: (originalIngredient.amount * servings).toFixed(1) */
                   amount: Number.isInteger(ingredient.amount * servings)
-                    ? ingredient.amount * servings
-                    : (ingredient.amount * servings).toFixed(1),
+                    ? ingredient.amount * servings // Ganze Zahl ohne Dezimalstellen
+                    : (ingredient.amount * servings).toFixed(1), // Eine Nachkommastelle bei Dezimalzahlen
                 }
               : ingredient;
           }
@@ -90,7 +97,7 @@ function Favorites() {
       });
       return updatedMissing;
     });
-  }, [servings, favorites]);
+  }, [servings]);
 
   useEffect(() => {
     if (selectedRecipeId) {
@@ -107,10 +114,11 @@ function Favorites() {
   const addMissingToShoppingList = async () => {
     if (!selectedRecipeId || !missingIngredients[selectedRecipeId]) return;
     const missingNames = missingIngredients[selectedRecipeId]
-      .filter((ingredient) => ingredient.name.trim())
+
+      .filter((ingredient) => ingredient.name.trim()) // Sicherstellen, dass nur gültige Zutaten enthalten sind
       .map((ingredient) => ingredient.name.trim().toLowerCase());
 
-    if (missingNames.length === 0) return;
+    if (missingNames.length === 0) return; // Falls keine Zutaten fehlen, nichts tun (abbrechen)
 
     try {
       const response = await fetch(
@@ -130,9 +138,12 @@ function Favorites() {
 
         setMissingIngredients((prev) => {
           const updated = { ...prev };
-          delete updated[selectedRecipeId];
+
+          delete updated[selectedRecipeId]; // Löscht die Zutaten für das aktuelle Rezept
           return updated;
         });
+
+        // Speichert die Änderungen auch in Favoriten
         setFavorites((prevFavorites) =>
           prevFavorites.map((fav) =>
             fav.id === selectedRecipeId
@@ -226,9 +237,11 @@ function Favorites() {
 
   return (
     <div className="min-h-full bg-black text-gray-100 py-10">
+
       <h1 className="text-3xl font-bold mb-8 text-center text-orange-100">
         My Recipe Highlights
       </h1>
+
       {/* Filter Section */}
       {!selectedRecipeId && (
         <div className="flex flex-wrap justify-center gap-6 mb-8">
@@ -368,6 +381,7 @@ function Favorites() {
                       &minus;
                     </button>
                     <span className="text-lg">{servingsText}</span>
+
                     <button
                       onClick={handleIncreaseServings}
                       className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-600 hover:bg-green-500 transition-colors"
@@ -441,23 +455,27 @@ function Favorites() {
 
                 {/** Preparation */}
                 <div className="bg-gray-900 rounded-3xl p-6 shadow-md mb-6">
-                  <h3 className="text-xl font-semibold mb-3">Preparation</h3>
-                  <ol className="list-decimal ml-6 space-y-2">
-                    {recipe.preparation.map((step, index) => (
-                      <div key={index} className="mb-6 flex items-start">
-                        {/* Number Badge */}
-                        <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-green-600 text-white font-bold text-lg text-center">
-                          {index + 1}
+
+                  <h3 className="text-xl font-semibold mb-6">Preparation</h3>
+                  <div className="relative pl-10">
+                    <div className="absolute left-5 top-0 bottom-0 w-px bg-gray-600"></div>
+
+                    <ol className="list-decimal ml-6 space-y-2">
+                      {recipe.preparation.map((step, index) => (
+                        <div key={index} className="mb-6 flex items-start">
+                          {/* Number Badge */}
+                          <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-green-600 text-white font-bold text-lg text-center">
+                            {index + 1}
+                          </div>
+                          {/* Step Description */}
+                          <div className="ml-4">
+                            <p className="text-gray-300 text-lg">{step}</p>
+                          </div>
                         </div>
-                        {/* Step Description */}
-                        <div className="ml-4">
-                          <p className="text-gray-300 text-lg">
-                            {step}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </ol>
+                      ))}
+                    </ol>
+                  </div>
+
                 </div>
 
                 {/** Nutrition */}
@@ -478,6 +496,10 @@ function Favorites() {
                     ))}
                   </ul>
                 </div>
+                <CulinaryJournalForm
+                  recipeName={recipe.title}
+                  recipeId={recipe.id}
+                />
               </div>
             ))}
           <div className="flex justify-center mt-8">
@@ -505,6 +527,7 @@ function Favorites() {
               />
               <div className="p-4">
                 <h2 className="text-xl font-semibold mb-2">{recipe.title}</h2>
+
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
                     <FontAwesomeIcon
@@ -558,6 +581,7 @@ function Favorites() {
       )}
 
       {/** Back to Home Button */}
+
       {!selectedRecipeId && (
         <div className="flex justify-center mt-12">
           <button

@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import {
-  FaUser,
-  FaHeart,
-  FaSignOutAlt,
-  FaCartArrowDown,
-  FaUtensils,
-} from "react-icons/fa";
+import { FaUser, FaHeart, FaSignOutAlt, FaCartArrowDown } from "react-icons/fa";
+import { BsJournalAlbum } from "react-icons/bs";
 
 const HoverEffect = () => (
   <>
@@ -60,8 +55,11 @@ function Navbar() {
     <nav className="hidden md:flex items-center justify-between p-8 mr-6 ml-6 bg-transparent z-50">
       <div className="flex items-center">
         {/* Logo or Brand Name */}
-        <NavLink to="/home" className="text-2xl font-bold text-orange-200">
-          LeckerLex
+        <NavLink to="/home" className="text-2xl  text-orange-200">
+          <span className="font-charmonman font-bold text-green-400 text-4xl">
+            Lecker
+          </span>
+          <span className="font-semibold">Lex</span>
         </NavLink>
       </div>
       {/* Increase horizontal gap between navlinks */}
@@ -95,13 +93,13 @@ function Navbar() {
           <HoverEffect />
         </NavLink>
 
-               <NavLink
-                  to="/home/journal"
-                  className="relative group text-orange-100 text-md w-max flex items-center"
-                >
-                  <FaUtensils className="mr-2" /> Culinary Journal
-                  <HoverEffect />
-                </NavLink>
+        <NavLink
+          to="/home/journal"
+          className="relative group text-orange-100 text-md w-max flex items-center"
+        >
+          <BsJournalAlbum className="mr-2" /> Culinary Journal
+          <HoverEffect />
+        </NavLink>
 
         {isLoggedIn ? (
           <button
@@ -121,7 +119,6 @@ function Navbar() {
             Log In
             <HoverEffect />
           </NavLink>
-          
         )}
       </div>
     </nav>

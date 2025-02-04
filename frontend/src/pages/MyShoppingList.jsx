@@ -18,9 +18,12 @@ function MyShoppingList() {
     const getShoppingList = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:3000/users/shoppinglist", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          "http://localhost:3000/users/shoppinglist",
+          {
+            credentials: "include",
+          }
+        );
         if (!response.ok) {
           setError("Failed to fetch shopping list.");
         }
@@ -41,17 +44,20 @@ function MyShoppingList() {
   // Save the updated shopping list to the backend
   const saveShoppingList = async (updatedList) => {
     try {
-      const response = await fetch("http://localhost:3000/users/update-shoppinglist", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          shoppingList: updatedList,
-          action: "replace",
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:3000/users/update-shoppinglist",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            shoppingList: updatedList,
+            action: "replace",
+          }),
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to update shopping list.");
       }
@@ -121,7 +127,9 @@ function MyShoppingList() {
       return;
     }
     if (shoppingList.includes(formattedIngredient)) {
-      setNotification("This ingredient has already been added to the shopping list");
+      setNotification(
+        "This ingredient has already been added to the shopping list"
+      );
       setTimeout(() => {
         setNotification("");
       }, 3000);
@@ -136,7 +144,7 @@ function MyShoppingList() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-fit">
+    <div className="flex flex-col lg:flex-row min-h-fit lg:pr-5">
       {/* Image Section (visible on large screens) */}
       <div className="hidden lg:flex w-auto mt-4 flex-col items-center justify-center p-4">
         <img
@@ -148,7 +156,7 @@ function MyShoppingList() {
 
       {/* Shopping List Section */}
       <div
-        className="p-8 m-10 w-full lg:w-2/3 border border-gray-800 rounded-3xl shadow-lg"
+        className="p-8 m-auto w-full lg:w-2/3 border border-gray-800 rounded-3xl shadow-lg"
         style={{ background: "#11151E" }}
       >
         {/* Title */}

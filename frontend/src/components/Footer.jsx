@@ -8,6 +8,7 @@ import {
   FaWhatsapp,
   FaCartArrowDown,
 } from "react-icons/fa";
+import { BsJournalAlbum } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 
 function Footer() {
@@ -80,7 +81,7 @@ function Footer() {
 
       {/* Navigationsleiste für mobile Geräte */}
 
-      <nav className="bg-green-50 rounded-lg shadow-md mx-auto fixed bottom-0 w-full md:hidden">
+      <nav className="bg-green-50 rounded-lg shadow-md mx-auto fixed bottom-0 w-full md:hidden z-30">
         <ul className="flex justify-around p-2 text-sm font-medium text-gray-700">
           <li className="hover:text-green-500">
             <NavLink
@@ -113,6 +114,17 @@ function Footer() {
               onClick={() => setActiveIcon("heart")}
             >
               <FaHeart size={20} />
+            </NavLink>
+          </li>
+          <li className="hover:text-green-500">
+            <NavLink
+              to="journal"
+              className={`hover:underline ${
+                activeIcon === "journal" ? "text-green-500" : ""
+              }`}
+              onClick={() => setActiveIcon("journal")}
+            >
+              <BsJournalAlbum size={20} />
             </NavLink>
           </li>
           <li className="hover:text-green-500">

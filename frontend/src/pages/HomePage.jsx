@@ -6,7 +6,6 @@ import Ingredients from "../components/Ingredients";
 import SearchBar from "../components/SearchBar";
 import Sidebar from "../components/Sidebar";
 
-
 export default function HomePage() {
   const [guestCount, setGuestCount] = useState(0);
   useEffect(() => {
@@ -188,42 +187,41 @@ export default function HomePage() {
   };
 
   return (
-      <div className="min-h-full bg-black">
-        <div className="flex justify-center items-center">
-          <SearchBar
-            searchText={searchText}
-            setSearchText={setSearchText}
-            handleSearch={handleSearch}
-            isSidebarOpen={isSidebarOpen}
-            setIsSidebarOpen={setIsSidebarOpen}
-            selectedIngredients={selectedIngredients}
-            handleAddIngredient={handleAddIngredient} // IMPORTANT
-          />
-        </div>
-        {errorMessage && (
-          <p className="text-red-500 text-center mt-4">{errorMessage}</p>
-        )}
-        <CategorySlider
-          categories={categories}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-        />
-        <Ingredients
-          selectedCategory={selectedCategory}
-          selectedIngredients={selectedIngredients}
-          setSelectedIngredients={setSelectedIngredients}
+    <div className="min-h-full bg-black">
+      <div className="flex justify-center items-center">
+        <SearchBar
           searchText={searchText}
           setSearchText={setSearchText}
-        />
-
-        <Sidebar
+          handleSearch={handleSearch}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
           selectedIngredients={selectedIngredients}
-          handleRemoveIngredient={handleRemoveIngredient}
-          handleRemoveAll={handleRemoveAll}
+          handleAddIngredient={handleAddIngredient} // IMPORTANT
         />
       </div>
+      {errorMessage && (
+        <p className="text-red-500 text-center mt-4">{errorMessage}</p>
+      )}
+      <CategorySlider
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
+      <Ingredients
+        selectedCategory={selectedCategory}
+        selectedIngredients={selectedIngredients}
+        setSelectedIngredients={setSelectedIngredients}
+        searchText={searchText}
+        setSearchText={setSearchText}
+      />
 
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        selectedIngredients={selectedIngredients}
+        handleRemoveIngredient={handleRemoveIngredient}
+        handleRemoveAll={handleRemoveAll}
+      />
+    </div>
   );
 }

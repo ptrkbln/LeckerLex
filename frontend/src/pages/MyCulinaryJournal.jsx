@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 export default function MyCulinaryJournal() {
   const [journalEntries, setJournalEntries] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isJournalLoaded, setIsJournalLoaded] = useState(false);
   const [error, setError] = useState("");
 
   // get request on mount (empty dependency array)
@@ -20,6 +21,10 @@ export default function MyCulinaryJournal() {
 
         const result = await response.json();
         setJournalEntries(result);
+
+        setTimeout(() => {
+          setIsJournalLoaded(true);
+        }, 100);
       } catch (error) {
         console.log(error);
         setError(error);
@@ -60,24 +65,37 @@ export default function MyCulinaryJournal() {
     );
   }
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-2xl font-bold mb-4">
-        Savor the Memories: Your Cooking Journey
+    <div className="min-h-full flex flex-col items-center justify-center py-10">
+      <h1 className="text-3xl font-bold mb-10 text-orange-200 pb-3">
+        Culinary Snapshots
       </h1>
-      {journalEntries.map((entry) => (
-        <div
-          key={entry._id}
-          className="bg-white p-4 shadow-md rounded-lg max-w-md w-full text-center"
-        >
-          <h2 className="text-xl font-semibold">{entry.recipeName}</h2>
-          <img
-            className="w-64 h-auto rounded-lg mx-auto my-2"
-            src={entry.imageUrl}
-            alt="Cooked Dish"
-          />
-          <p className="text-gray-600">{entry.notes}</p>
-        </div>
-      ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {journalEntries.map((entry, index) => {
+          const delay = index * 80; // delay for smooth effect
+          return (
+            <figure
+              key={entry._id}
+              style={{ transitionDelay: `${delay}ms` }}
+              className={`bg-white flex flex-col justify-between h-full p-4 pb-10 shadow-lg rounded-lg w-80 mx-auto ${
+                index % 2 === 0 ? "rotate-[-3deg]" : "rotate-[3deg]"
+              } border border-gray-300 font-playpen shadow-[5px_5px_10px_rgba(255,255,255,0.3)] tracking-wide text-gray-700 transition-opacity duration-700 ease-in-out
+                ${isJournalLoaded ? "opacity-100" : "opacity-0"}`}
+            >
+              <img
+                className="w-full h-auto rounded-md shadow-md"
+                src={entry.imageUrl}
+                alt="Cooked Dish"
+              />
+              <figcaption className="mt-4 text-center text-gray-800 font-semibold">
+                {entry.recipeName}
+                <p className="text-gray-600 text-center mt-2 px-4 font-normal">
+                  {entry.notes}
+                </p>
+              </figcaption>
+            </figure>
+          );
+        })}
+      </div>
     </div>
   );
 }

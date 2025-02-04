@@ -1,14 +1,13 @@
 import { Schema, model } from "mongoose";
 
-// Define schema for a review
-// TODO validators
+// TODO: add createdAt or timestamps to display date
 
 const journalSchema = new Schema({
   notes: {
     type: String,
     required: [true, "Comment field is missing"],
-    minlength: 10,
-    maxlength: 1000,
+    minlength: 5,
+    maxlength: 150,
   },
   imageUrl: {
     type: String,

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,7 +7,6 @@
 :root {
   font-family: "Open Sans", "Sans Serif";
 }
-
 
 /* NotFound Page Styling */
 
@@ -29,5 +30,4 @@
   border-radius: 5px;
   text-decoration: none;
 }
-
 
