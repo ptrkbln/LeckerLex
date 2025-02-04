@@ -439,12 +439,25 @@ function Favorites() {
 
                 {/** Preparation */}
                 <div className="bg-gray-900 rounded-3xl p-6 shadow-md mb-6">
-                  <h3 className="text-xl font-semibold mb-3">Preparation</h3>
-                  <ol className="list-decimal ml-6 space-y-2">
-                    {recipe.preparation.map((step, index) => (
-                      <li key={index}>{step}</li>
-                    ))}
-                  </ol>
+                  <h3 className="text-xl font-semibold mb-6">Preparation</h3>
+                  <div className="relative pl-10">
+                    <div className="absolute left-5 top-0 bottom-0 w-px bg-gray-600"></div>
+
+                    <ol className="list-decimal ml-6 space-y-2">
+                      {recipe.preparation.map((step, index) => (
+                        <div key={index} className="mb-6 flex items-start">
+                          {/* Number Badge */}
+                          <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-green-600 text-white font-bold text-lg text-center">
+                            {index + 1}
+                          </div>
+                          {/* Step Description */}
+                          <div className="ml-4">
+                            <p className="text-gray-300 text-lg">{step}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </ol>
+                  </div>
                 </div>
 
                 {/** Nutrition */}
