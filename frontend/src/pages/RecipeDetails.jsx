@@ -313,7 +313,7 @@ function RecipeDetails() {
                 return (
                   <li
                     key={index}
-                    className="py-2 flex justify-around items-center"
+                    className="py-2 flex justify-between items-center"
                   >
                     <span className="font-semibold text-gray-200">
                       {displayAmount} {ingredient.unit}
