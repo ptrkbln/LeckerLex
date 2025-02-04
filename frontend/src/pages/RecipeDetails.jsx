@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function RecipeDetails() {
+
   const { id } = useParams(); // Rezept-ID aus der URL
   const { recipes } = useContext(RecipeContext); // Rezepte aus dem Context
   const { isLoggedIn } = useContext(AuthContext);
@@ -24,6 +25,7 @@ function RecipeDetails() {
     favorites: favs,
     setFavorites,
   } = useContext(RecipeContext);
+
 
   const navigate = useNavigate();
 
@@ -37,6 +39,11 @@ function RecipeDetails() {
   const [showShoppingListModal, setShowShoppingListModal] = useState(false);
   const [servings, setServings] = useState(recipe?.servingsAmount || 1);
   const [showFavoriteModal, setShowFavoriteModal] = useState(false);
+
+  useEffect(() => {
+    console.log(isFavorite);
+    
+  }, [isFavorite])
 
   // Toggle between sections.
   const toggleSection = (section) => {
@@ -68,6 +75,10 @@ function RecipeDetails() {
 
     // If recipe already in favorites, remove it.
     if (isFavorite.includes(recipe.id)) {
+      console.log("arrived here:", recipe.id);
+      const filtered = (isFavorite.filter((favId) => favId !== recipe.id));
+      console.log("filtered:", filtered);
+      
       setIsFavorite(isFavorite.filter((favId) => favId !== recipe.id));
       setFavorites(favs.filter((fav) => fav.id !== recipe.id));
     } else {

@@ -31,6 +31,7 @@ function ResultPage() {
 
   const { recipes } = useContext(RecipeContext);
 
+
   const [visibleCount, setVisibleCount] = useState(8);
 
   const navigate = useNavigate();
@@ -99,12 +100,12 @@ function ResultPage() {
               onChange={(e) => setCookTime(e.target.value)}
               className="p-3 bg-gray-800 border border-gray-700 rounded-full text-gray-200 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
             >
-              <option value="">Select...</option>
-              <option value="0-15">0 - 15 minutes</option>
-              <option value="15-30">15 - 30 minutes</option>
-              <option value="30-45">30 - 45 minutes</option>
-              <option value="45-60">45 - 60 minutes</option>
-              <option value="60+">60+ minutes</option>
+             <option value="">Select...</option>
+              <option value="0-15">0 - 15 min</option>
+              <option value="15-30">15 - 30 min</option>
+              <option value="30-45">30 - 45 min</option>
+              <option value="45-60">45 - 60 min</option>
+              <option value="60+">60+ min</option>
             </select>
           </label>
 
@@ -117,17 +118,17 @@ function ResultPage() {
               className="p-3 bg-gray-800 border border-gray-700 rounded-full text-gray-200 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
             >
               <option value="">Select...</option>
-              <option value="0-100">0 - 100 calories</option>
-              <option value="100-200">100 - 200 calories</option>
-              <option value="200-300">200 - 300 calories</option>
-              <option value="300-400">300 - 400 calories</option>
-              <option value="400+">400+ calories</option>
+              <option value="0-100">0 - 100 kcal</option>
+              <option value="100-200">100 - 200 kcal</option>
+              <option value="200-300">200 - 300 kcal</option>
+              <option value="300-400">300 - 400 kcal</option>
+              <option value="400+">400+ kcal</option>
             </select>
           </label>
 
-          {/* Nutrition */}
+          {/* Diet */}
           <label className="flex flex-col items-center">
-            <span className="mb-1 text-center text-gray-200">Nutrition</span>
+            <span className="mb-1 text-center text-gray-200">Diet</span>
             <select
               value={nutrition}
               onChange={(e) => setNutrition(e.target.value)}
@@ -151,7 +152,7 @@ function ResultPage() {
             onClick={() =>
               recipe.id && navigate(`/home/recipe-details/${recipe.id}`)
             }
-            className="bg-gray-900 rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 hover:shadow-2xl transition duration-300 cursor-pointer"
+            className="bg-gray-900 rounded-2xl overflow-hidden transform hover:scale-105 hover:shadow-2xl transition duration-300 cursor-pointer"
           >
             <LazyImage
               delay={idx * 100}

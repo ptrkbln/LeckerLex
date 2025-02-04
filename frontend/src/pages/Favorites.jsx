@@ -85,6 +85,7 @@ function Favorites() {
             return originalIngredient
               ? {
                   ...ingredient,
+
                   /* amount: (originalIngredient.amount * servings).toFixed(1) */
                   amount: Number.isInteger(ingredient.amount * servings)
                     ? ingredient.amount * servings // Ganze Zahl ohne Dezimalstellen
@@ -103,7 +104,6 @@ function Favorites() {
       const storedMissing =
         favorites.find((fav) => fav.id === selectedRecipeId)
           ?.missingIngredients || [];
-
       setMissingIngredients((prev) => ({
         ...prev,
         [selectedRecipeId]: storedMissing,
@@ -170,12 +170,11 @@ function Favorites() {
           ...prevList,
           ...pendingShoppingListUpdate,
         ]);
-
         return [...updatedList];
       });
       setPendingShoppingListUpdate(null);
     }
-  }, [pendingShoppingListUpdate, setShoppingList, hasInitialized]);
+  }, [pendingShoppingListUpdate, setShoppingList]);
 
   const servingsText = `for ${servings} ${
     servings === 1 || servings === 0.5 ? "serving" : "servings"
@@ -222,61 +221,78 @@ function Favorites() {
   // Only show filtered recipes in the grid view.
   const filteredFavorites = favorites.filter(filterRecipe);
 
+  if (favorites.length < 1) {
+    return (
+      <div className="flex flex-col justify-center items-center p-10 m-2 text-gray-50">
+        <p className="text-2xl pb-10 ">No recipes added yet... 😔</p>
+        <button
+          onClick={() => (window.location.href = "/home")}
+          className="px-4 py-2 bg-green-500 hover:bg-green-600 transition-colors rounded-full shadow text-md"
+        >
+          Back to Home
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-full bg-black text-gray-100 py-10">
+
+      <h1 className="text-3xl font-bold mb-8 text-center text-orange-100">
+        My Recipe Highlights
+      </h1>
+
       {/* Filter Section */}
       {!selectedRecipeId && (
-        <main className="bg-gray-800 shadow-lg rounded-2xl w-full max-w-3xl mx-auto p-6 mb-8">
-          <div className="flex flex-wrap justify-around gap-6">
-            {/** Cooking Time */}
-            <label className="flex flex-col items-center">
-              <span className="mb-2">Cooking Time</span>
-              <select
-                value={cookTime}
-                onChange={(e) => setCookTime(e.target.value)}
-                className="p-2 border border-gray-600 rounded-full bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
-              >
-                <option value="">Select...</option>
-                <option value="0-15">0 - 15 minutes</option>
-                <option value="15-30">15 - 30 minutes</option>
-                <option value="30-45">30 - 45 minutes</option>
-                <option value="45-60">45 - 60 minutes</option>
-                <option value="60+">60 or more</option>
-              </select>
-            </label>
-            {/** Calories */}
-            <label className="flex flex-col items-center">
-              <span className="mb-2">Calories</span>
-              <select
-                value={calories}
-                onChange={(e) => setCalories(e.target.value)}
-                className="p-2 border border-gray-600 rounded-full bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
-              >
-                <option value="">Select...</option>
-                <option value="0-100">0 - 100 calories</option>
-                <option value="100-200">100 - 200 calories</option>
-                <option value="200-300">200 - 300 calories</option>
-                <option value="300-400">300 - 400 calories</option>
-                <option value="400+">400 or more calories</option>
-              </select>
-            </label>
-            {/** Nutrition */}
-            <label className="flex flex-col items-center">
-              <span className="mb-2">Nutrition</span>
-              <select
-                value={nutrition}
-                onChange={(e) => setNutrition(e.target.value)}
-                className="p-2 border border-gray-600 rounded-full bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
-              >
-                <option value="">Select...</option>
-                <option value="vegetarian">Vegetarian</option>
-                <option value="vegan">Vegan</option>
-                <option value="gluten-free">Gluten-free</option>
-                <option value="dairy-free">Dairy-free</option>
-              </select>
-            </label>
-          </div>
-        </main>
+        <div className="flex flex-wrap justify-center gap-6 mb-8">
+          {/** Cooking Time */}
+          <label className="flex flex-col items-center">
+            <span className="mb-2">Cooking Time</span>
+            <select
+              value={cookTime}
+              onChange={(e) => setCookTime(e.target.value)}
+              className="p-3 bg-gray-800 border border-gray-700 rounded-full text-gray-200 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
+            >
+              <option value="">Select...</option>
+              <option value="0-15">0 - 15 min</option>
+              <option value="15-30">15 - 30 min</option>
+              <option value="30-45">30 - 45 min</option>
+              <option value="45-60">45 - 60 min</option>
+              <option value="60+">60+ min</option>
+            </select>
+          </label>
+          {/** Calories */}
+          <label className="flex flex-col items-center">
+            <span className="mb-2">Calories</span>
+            <select
+              value={calories}
+              onChange={(e) => setCalories(e.target.value)}
+              className="p-3 bg-gray-800 border border-gray-700 rounded-full text-gray-200 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
+            >
+              <option value="">Select...</option>
+              <option value="0-100">0 - 100 kcal</option>
+              <option value="100-200">100 - 200 kcal</option>
+              <option value="200-300">200 - 300 kcal</option>
+              <option value="300-400">300 - 400 kcal</option>
+              <option value="400+">400+ kcal</option>
+            </select>
+          </label>
+          {/** Diet */}
+          <label className="flex flex-col items-center">
+            <span className="mb-2">Diet</span>
+            <select
+              value={nutrition}
+              onChange={(e) => setNutrition(e.target.value)}
+              className="p-3 bg-gray-800 border border-gray-700 rounded-full text-gray-200 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
+            >
+              <option value="">Select...</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan</option>
+              <option value="gluten-free">Gluten-free</option>
+              <option value="dairy-free">Dairy-free</option>
+            </select>
+          </label>
+        </div>
       )}
 
       {/* Recipe Details Section */}
@@ -287,7 +303,7 @@ function Favorites() {
             .map((recipe) => (
               <div key={recipe.id}>
                 {/** Recipe Header */}
-                <div className="bg-gray-900 rounded-2xl overflow-hidden shadow-md mb-6">
+                <div className="bg-gray-900 rounded-3xl overflow-hidden shadow-md mb-6">
                   <img
                     src={recipe.image}
                     alt={recipe.title}
@@ -439,6 +455,7 @@ function Favorites() {
 
                 {/** Preparation */}
                 <div className="bg-gray-900 rounded-3xl p-6 shadow-md mb-6">
+
                   <h3 className="text-xl font-semibold mb-6">Preparation</h3>
                   <div className="relative pl-10">
                     <div className="absolute left-5 top-0 bottom-0 w-px bg-gray-600"></div>
@@ -458,6 +475,7 @@ function Favorites() {
                       ))}
                     </ol>
                   </div>
+
                 </div>
 
                 {/** Nutrition */}
@@ -467,7 +485,7 @@ function Favorites() {
                   </h3>
                   <ul className="ml-6 space-y-1">
                     {Object.entries(recipe.nutrition).map(([key, value]) => (
-                      <li key={key}>
+                      <li key={key} className="list-disc">
                         <span className="capitalize">{key}</span>: {value}
                         {key === "calories"
                           ? " kcal"
@@ -568,7 +586,7 @@ function Favorites() {
         <div className="flex justify-center mt-12">
           <button
             onClick={() => (window.location.href = "/home")}
-            className="px-8 py-3 bg-green-500 hover:bg-green-600 transition-colors rounded-full shadow text-xl"
+            className="px-4 py-2 bg-green-500 hover:bg-green-600 transition-colors rounded-full shadow text-md"
           >
             Back to Home
           </button>

@@ -13,7 +13,7 @@ export default function AccountSettings() {
   return (
     <div className="bg-gray-950 flex items-center rounded-3xl justify-center py-10 px-4">
       {/* Form Card */}
-      <div className="w-full max-w-lg bg-[#11151E] rounded-3xl shadow-2xl p-10">
+      <div className="w-full max-w-lg rounded-3xl p-10">
         <h2 className="text-3xl font-bold text-center text-gray-200 mb-8">
           Account Settings
         </h2>
@@ -37,16 +37,6 @@ export default function AccountSettings() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-2 px-4 py-3 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-            />
-          </div>
-          {/* Country Field */}
-          <div className="flex flex-col">
-            <label className="text-lg font-medium text-gray-300">Country</label>
-            <input
-              type="text"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
               className="mt-2 px-4 py-3 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             />
           </div>

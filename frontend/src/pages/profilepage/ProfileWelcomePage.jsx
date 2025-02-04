@@ -44,7 +44,7 @@ export default function ProfileWelcomePage() {
       default:
         return (
           <div className="flex flex-col items-center justify-center space-y-6">
-            <h1 className="text-4xl font-bold text-gray-200">
+            <h1 className="text-4xl font-bold text-orange-50">
               Welcome, username!
             </h1>
             <p className="text-lg text-gray-400 text-center max-w-md">
@@ -64,13 +64,15 @@ export default function ProfileWelcomePage() {
   };
 
   return (
-    <div className="min-h-full flex items-center justify-center align py-10 px-4">
-      <div className="flex flex-col md:flex-row w-full max-w-5xl bg-gray-900 rounded-3xl shadow-2xl justify-center items-center overflow-hidden">
+
+    <div className="min-h-full flex items-center justify-center py-10 px-4">
+      <div className="flex flex-col md:flex-row w-auto max-w-5xl bg-gray-900 rounded-3xl shadow-2xl overflow-hidden">
+
         {/* Sidebar/Menu */}
         {!isMobileView && (
           <aside className="w-full md:w-1/3 bg-[#11151E] border-r border-gray-700 p-8">
             <div className="flex flex-col items-center mb-10">
-              <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden shadow-md">
+              <div className="w-32 h-32 rounded-full bg-orange-50 flex items-center justify-center overflow-hidden shadow-md">
                 {profilePhoto ? (
                   <img
                     src={profilePhoto}
@@ -110,7 +112,7 @@ export default function ProfileWelcomePage() {
                 <li
                   key={index}
                   onClick={item.action}
-                  className="flex items-center p-3 rounded-xl cursor-pointer transition-colors duration-300 text-white hover:bg-green-500 hover:text-white border border-gray-700 shadow-sm"
+                  className="flex items-center p-3 rounded-xl cursor-pointer transition-colors duration-300 text-orange-50 hover:bg-green-500 hover:text-white border border-gray-700 shadow-sm"
                 >
                   <i className={`${item.icon} w-6 text-center`} />
                   <span className="ml-3 text-sm font-medium">{item.label}</span>
