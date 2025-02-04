@@ -26,7 +26,7 @@ export default function ChangePhoto({ profilePhoto, setProfilePhoto }) {
   };
 
   return (
-    <div className="space-y-4 p-4 bg-[#11151E] rounded-3xl shadow-lg">
+    <div className="space-y-4 p-4 bg-gray-950 rounded-3xl shadow-lg">
       <h2 className="text-3xl text-center font-semibold text-white mt-5 mb-6">
         Change Profile Photo
       </h2>
@@ -48,19 +48,19 @@ export default function ChangePhoto({ profilePhoto, setProfilePhoto }) {
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="text-md bg-gray-700 border border-gray-600 rounded-md p-2 text-white"
+          className="text-md bg-gray-700 border border-gray-600 rounded-lg p-2 text-white"
         />
         {/* Action buttons */}
         <div className="flex space-x-4">
           <button
             onClick={handleUpload}
-            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+            className="px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition"
           >
             Upload Photo
           </button>
           <button
             onClick={handleDelete}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+            className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
           >
             Delete Photo
           </button>

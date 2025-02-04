@@ -17,7 +17,7 @@ const HoverEffect = () => (
 );
 
 function Navbar() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();

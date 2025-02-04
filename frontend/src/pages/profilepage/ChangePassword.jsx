@@ -17,9 +17,9 @@ export default function ChangePassword() {
   };
 
   return (
-    <div className="bg-gray-950 flex items-center justify-center rounded-3xl py-10">
+    <div className="flex items-center justify-center rounded-3xl py-10">
       {/* Form Card */}
-      <div className="w-full max-w-lg bg-[#11151E] rounded-3xl shadow-2xl p-10">
+      <div className="w-full max-w-lg bg-gray-950 rounded-3xl shadow-2xl p-10">
         <h2 className="text-3xl font-bold text-center text-gray-200 mb-8">
           Change Password
         </h2>

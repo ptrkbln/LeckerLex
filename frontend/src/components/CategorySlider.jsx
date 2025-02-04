@@ -97,27 +97,28 @@ function CategorySlider({ categories, selectedCategory, setSelectedCategory }) {
             className="p-3 flex justify-center items-center"
           >
             <div
-              role="button"
-              tabIndex={0}
-              className={`
-                md:p-2 rounded-full cursor-pointer shadow-md text-center text-md
-                transition-transform focus:outline-none
-                ${
-                  selectedCategory === category.id
-                    ? "bg-green-800 text-gray-100"
-                    : "bg-orange-50"
-                }
-                hover:text-gray-800 hover:scale-105 hover:ring-2 hover:ring-orange-700 hover:ring-offset-2
-              `}
-              onClick={() => setSelectedCategory(category.id)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  setSelectedCategory(category.id);
-                }
-              }}
-            >
-              {category.name}
-            </div>
+  role="button"
+  tabIndex={0}
+  className={`
+    md:p-2 rounded-full cursor-pointer shadow-lg text-center text-md
+    transition-transform duration-300 focus:outline-none
+    ${
+      selectedCategory === category.id
+        ? "bg-gradient-to-r from-green-500 to-green-600 text-white"
+        : "bg-gray-100 text-gray-800"
+    }
+    hover:from-green-600 hover:to-green-700 hover:bg-gradient-to-r hover:text-white hover:scale-105
+  `}
+  onClick={() => setSelectedCategory(category.id)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      setSelectedCategory(category.id);
+    }
+  }}
+>
+  {category.name}
+</div>
+
           </div>
         ))}
       </Slider>
